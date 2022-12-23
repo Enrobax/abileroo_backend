@@ -1,5 +1,5 @@
 
-from rest_framework import generics, filters, status
+from rest_framework import generics, filters, status, permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,12 +13,15 @@ from shops.serializers import ShopSerializer, ShopDetailSerializer
 class ShopListCreateApiView(generics.ListCreateAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
+    permission_classes = (permissions.AllowAny,)
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['name']
     search_fields = ('name',)
 
 
 class ShopDetailAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
     def get_shop(self, num):
         shop = get_object_or_404(Shop, pk=num)
         return shop

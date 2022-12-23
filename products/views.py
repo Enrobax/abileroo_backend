@@ -1,4 +1,4 @@
-from rest_framework import status, generics, filters
+from rest_framework import status, generics, filters, permissions
 from django_filters import rest_framework as searchfilters
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -12,12 +12,15 @@ from products.serializers import ProductSerializer
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     filter_backends = (searchfilters.DjangoFilterBackend, filters.OrderingFilter,)
     filterset_class = ProductFilter
     ordering_fields = ['name']
 
 
 class ProductDetailAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
     def get_product(self, id):
         product = get_object_or_404(Product, pk=id)
         return product

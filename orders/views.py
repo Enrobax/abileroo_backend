@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from django_filters import rest_framework as searchfilters
 from django.db import transaction
 from rest_framework.response import Response
@@ -13,11 +13,14 @@ from products.models import Product
 class OrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
     filter_backends = (searchfilters.DjangoFilterBackend,)
     filterset_class = OrderFilter
 
 
 class OrderCreateAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    
     def post(self, request):
         try:
             new_order_serializer = OrderSerializer(data=request.data)

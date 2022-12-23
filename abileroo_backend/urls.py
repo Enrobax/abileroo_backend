@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from abileroo. views import LoginView
 
 from abileroo_backend import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', LoginView.as_view()),
     path('shops-api/', include("shops.urls")),
     path('products-api/', include("products.urls")),
     path('orders-api/', include("orders.urls"))
