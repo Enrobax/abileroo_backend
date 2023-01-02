@@ -4,6 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from abileroo.permissions import IsAdminUserOrReadOnly
 from products.filters import ProductFilter
 from products.models import Product
 from products.serializers import ProductSerializer
@@ -12,14 +13,14 @@ from products.serializers import ProductSerializer
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (searchfilters.DjangoFilterBackend, filters.OrderingFilter,)
     filterset_class = ProductFilter
     ordering_fields = ['name']
 
 
 class ProductDetailAPIView(APIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAdminUserOrReadOnly,)
 
     def get_product(self, id):
         product = get_object_or_404(Product, pk=id)

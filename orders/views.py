@@ -20,7 +20,7 @@ class OrderListAPIView(generics.ListAPIView):
 
 class OrderCreateAPIView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    
+
     def post(self, request):
         try:
             new_order_serializer = OrderSerializer(data=request.data)
