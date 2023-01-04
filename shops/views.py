@@ -4,6 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from abileroo.permissions import IsAdminUserOrReadOnly
 from products.models import Product
 from products.serializers import ProductSerializer
 from shops.models import Shop
@@ -13,12 +14,15 @@ from shops.serializers import ShopSerializer, ShopDetailSerializer
 class ShopListCreateApiView(generics.ListCreateAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['name']
     search_fields = ('name',)
 
 
 class ShopDetailAPIView(APIView):
+    permission_classes = (IsAdminUserOrReadOnly,)
+
     def get_shop(self, num):
         shop = get_object_or_404(Shop, pk=num)
         return shop
